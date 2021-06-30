@@ -1,0 +1,6 @@
+show databases ;
+use vote;
+show tables ;
+
+select * from tb_subject;
+select * from tb_teacher;

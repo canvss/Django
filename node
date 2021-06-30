@@ -22,6 +22,77 @@ ORM来解决数据持久化问题，使用ORM是为了实现对象模型到关�
 利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类
     python manage.py inspectdb > polls/models.py
 
+使用orm模型完成CRUD
+    python manage.py shell
+
+
+
+说明1：由于老师与学科之间存在多对一外键关联，所以能通过学科反向查询到该学科的老师（从一对多关系中“一”的一方查询“多”的一方），反向查询属性默认的名字是类名小写_set（如上面例子中的teacher_set），当然也可以在创建模型时通过ForeingKey的related_name属性指定反向查询属性的名字。如果不希望执行反向查询可以将related_name属性设置为'+'或者以'+'开头的字符串。
+说明2：ORM查询多个对象时会返回QuerySet对象，QuerySet使用了惰性查询，即在创建QuerySet对象的过程中不涉及任何数据库活动，等真正用到对象时（对QuerySet求值）才向数据库发送SQL语句并获取对应的结果，这一点在实际开发中需要引起注意！
+说明3：如果希望更新多条数据，不用先逐一获取模型对象再修改对象属性，可以直接使用QuerySet对象的update()方法一次性更新多条数据。
+
+
+from polls.models import Subject
+
+subject1 = Subject(name='Python全栈开发', intro='当下最热门的学科', is_hot=True)
+subject1.save()
+subject2 = Subject(name='全栈软件测试', intro='学习自动化测试的学科', is_hot=False)
+subject2.save()
+subject3 = Subject(name='JavaEE分布式开发', intro='基于Java语言的服务器应用开发', is_hot=True)
+删除
+subject = Subject.objects.get(no=2)
+subject.delete()
+更新
+subject = Subject.objects.get(no=1)
+subject.name = 'Python全栈+人工智能'
+subject.save()
+查询
+查询所有对象。
+Subjects.objects.all()
+过滤数据。
+# 查询名称为“Python全栈+人工智能”的学科
+Subject.objects.filter(name='Python全栈+人工智能')
+
+# 查询名称包含“全栈”的学科（模糊查询）
+Subject.objects.filter(name__contains='全栈')
+Subject.objects.filter(name__startswith='全栈')
+Subject.objects.filter(name__endswith='全栈')
+
+# 查询所有热门学科
+Subject.objects.filter(is_hot=True)
+
+# 查询编号大于3小于10的学科
+Subject.objects.filter(no__gt=3).filter(no__lt=10)
+Subject.objects.filter(no__gt=3, no__lt=10)
+
+# 查询编号在3到7之间的学科
+Subject.objects.filter(no__ge=3, no__le=7)
+Subject.objects.filter(no__range=(3, 7))
+查询单个对象。
+# 查询主键为1的学科
+Subject.objects.get(pk=1)
+Subject.objects.get(no=1)
+Subject.objects.filter(no=1).first()
+Subject.objects.filter(no=1).last()
+排序。
+# 查询所有学科按编号升序排列
+Subject.objects.order_by('no')
+# 查询所有部门按部门编号降序排列
+Subject.objects.order_by('-no')
+切片（分页查询）。
+# 按编号从小到大查询前3个学科
+Subject.objects.order_by('no')[:3]
+计数。
+# 查询一共有多少个学科
+Subject.objects.count()
+高级查询。
+# 查询编号为1的学科的老师
+Teacher.objects.filter(subject__no=1)
+Subject.objects.get(pk=1).teacher_set.all()
+
+# 查询学科名称有“全栈”二字的学科的老师
+Teacher.objects.filter(subject__name__contains='全
+
 
 settings配置文件
     INSTALLED_APPS = [
