@@ -1,0 +1,57 @@
+安装app
+    python manage.py startapp first
+启动django
+    python manage.py runserver
+安装django
+    pip install django==2.2.13
+查看django
+    django-admin --version
+mysql驱动
+    pip install pymysql
+    以上配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
+    我的【NAME】，写成了【Name】导致数据连接时提示：找不到这个数据库 。
+    然后通过pip 安装pymysql ：pip install pymysql
+    再在项目配置目录里的init.py文件中写入：
+        import pymysql
+        pymysql.install_as_MySQLdb()
+    执行python manage.py makemigrations
+        python manage.py makemigra
+    再运行服务，应该是可以启动django服务的。
+
+ORM来解决数据持久化问题，使用ORM是为了实现对象模型到关系模型的双向转换，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。
+利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类
+    python manage.py inspectdb > polls/models.py
+
+
+settings配置文件
+    INSTALLED_APPS = [
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'polls',
+    ]
+
+    DATABASES = {
+        'default': {
+            # 数据库引擎配置
+            'ENGINE': 'django.db.backends.mysql',
+            # 数据库的名字
+            'NAME': 'vote',
+            # 数据库服务器的IP地址（本机可以写localhost或127.0.0.1）
+            'HOST': 'localhost',
+            # 启动MySQL服务的端口号
+            'PORT': 3306,
+            # 数据库用户名和口令
+            'USER': 'hellokitty',
+            'PASSWORD': 'Hellokitty.618',
+            # 数据库使用的字符集
+            'CHARSET': 'utf8',
+            # 数据库时间日期的时区设定
+            'TIME_ZONE': 'Asia/Chongqing',
+        }
+    }
+
+
