@@ -109,6 +109,19 @@ Django模型最佳实践
     定义__str__方法。
     不要将数据文件放在同一个目录中。
 
+本地存储stirage
+    Local Storage
+    Session Storage
+    IndexedDB
+    Web SQL
+    Cookies
+
+Session和Cookies区别？
+
+JSON序列化？
+
+
+
 
 
 
