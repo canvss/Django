@@ -109,12 +109,25 @@ Django模型最佳实践
     定义__str__方法。
     不要将数据文件放在同一个目录中。
 
-本地存储stirage
-    Local Storage
-    Session Storage
-    IndexedDB
-    Web SQL
-    Cookies
+实现用户跟踪
+    URl重写：所谓URL重写就是在URL中携带sessionid
+    隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
+        <input type="hidden" name="sessionid" value="123456">
+    本地存储
+        Local Storage
+        Session Storage
+        IndexedDB
+        Web SQL
+        Cookies
+
+Django settings文件
+SESSION_COOKINE_AGE=1209600    session过期时间秒
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  True在关闭浏览器窗口session就过期
+# 配置将会话对象放到缓存中存储
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# 配置使用哪一组缓存来保存会话
+SESSION_CACHE_ALIAS = 'default'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 Session和Cookies区别？
 
