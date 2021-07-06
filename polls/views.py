@@ -30,7 +30,6 @@ def show_teachers(request: HttpRequest) -> HttpResponse:
 
 
 def praise_or_criticize(request: HttpRequest) -> HttpResponse:
-    print('running is this !!!')
     if request.session.get('userid'):
         try:
             tno = int(request.GET.get('tno'))
@@ -61,12 +60,12 @@ def login(request: HttpRequest) -> HttpResponse:
             if user:
                 request.session['userid'] = user.no
                 request.session['username'] = user.username
-                return redirect('/login')
+                return render(request, 'header.html')
             else:
                 hint = '用户名或密码错误'
         else:
             hint = '请输入有效的用户名和密码'
-    return render(request,'login.html',{'hint':hint})
+    return render(request, 'login.html', {'hint':hint})
 
 #注销
 def logout(request):
@@ -81,3 +80,7 @@ def get_captcha(request: HttpRequest) -> HttpResponse:
     request.session['captcha'] = captcha_text
     image_data = Captcha.instance().generate(captcha_text)
     return HttpResponse(image_data,content_type='image/png')
+
+
+def register(request: HttpRequest) -> HttpResponse:
+    return render(request,'register.html')
