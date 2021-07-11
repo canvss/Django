@@ -1,24 +1,24 @@
-#PythonWeb框架Django
-###目录结构
+# PythonWeb框架Django
+### 目录结构
 ![](./node_file/目录结构.png)
-###安装app
+### 安装app
   ```  
   python manage.py startapp first
   ```  
-###启动django
+### 启动django
   ```  
   python manage.py runserver
   ```
-###安装django
+### 安装django
    ``` 
    pip install django==2.2.13
    ```
-###查看django
+### 查看django
    ``` 
    django-admin --version
    ```
 
-###配置文件settings.py
+### 配置文件settings.py
   ```  
     SESSION_COOKINE_AGE=1209600    session过期时间秒
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True  True在关闭浏览器窗口session就过期
@@ -59,7 +59,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_URL = '/static/'
 ```
 
-###路由配置：
+### 路由配置：
 ```python
 urlpatterns = [
     path('hello/', views.show_index),
@@ -232,7 +232,7 @@ Subject.objects.get(pk=1).teacher_set.all()
 # 查询学科名称有“全栈”二字的学科的老师
 Teacher.objects.filter(subject__name__contains='全
 ```
-###Django模型最佳实践
+### Django模型最佳实践
 ```
     正确的为模型和关系字段命名。
     设置适当的related_name属性。
@@ -249,7 +249,7 @@ Teacher.objects.filter(subject__name__contains='全
     定义__str__方法。
     不要将数据文件放在同一个目录中。
 ```
-###实现用户跟踪
+### 实现用户跟踪
 ```
     URl重写：所谓URL重写就是在URL中携带sessionid
     隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
