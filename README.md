@@ -158,19 +158,19 @@ class User(models.Model):
     执行python manage.py makemigrations
         python manage.py makemigra
     再运行服务，应该是可以启动django服务的。
-    ```
+   ```
 
-#ORM来解决数据持久化问题，
+### ORM来解决数据持久化问题
   ```  
     使用ORM是为了实现对象模型到关系模型的双向转换，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。
     利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类
     python manage.py inspectdb > polls/models.py
-```
+   ```
 
 #使用orm模型完成CRUD
    ``` 
     python manage.py shell
-```
+   ```
 
 ```python
 from polls.models import Subject
