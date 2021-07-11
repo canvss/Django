@@ -15,7 +15,7 @@ from mystie import views
 urlpatterns = [
     path('hello/', views.show_index),
     path('time/',views.get_time),
-
+    path('login/',views.login),
 
     # 带正则的请求
     # 已articles开头/4位0-9数字组成结尾

@@ -36,3 +36,15 @@ def year_month(request,month,year):
 def year_month_day(request,year,month,day):
     print('%s年%s月%s日',{year,month,day})
     return HttpResponse(year+'年'+month+'月'+day+'日')
+
+
+def login(request):
+    if request.method == 'GET':
+        return render(request,'mystie/login.html')
+    else:
+        username = request.POST.get('username')
+        pwd = request.POST.get('pwd')
+        if username== 'admin' and pwd =='123':
+            return HttpResponse('登录成功！！！')
+        else:
+            return HttpResponse('登录失败！')
