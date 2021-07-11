@@ -1,13 +1,13 @@
 #PythonWeb框架Django
 ####目录结构
 ![](node_file/目录结构.png)
-#安装app
+####安装app
     python manage.py startapp first
-#启动django
+####启动django
     python manage.py runserver
-#安装django
+####安装django
     pip install django==2.2.13
-#查看django
+####查看django
     django-admin --version
 
 ###配置文件settings.py
@@ -217,7 +217,7 @@ Subject.objects.get(pk=1).teacher_set.all()
 # 查询学科名称有“全栈”二字的学科的老师
 Teacher.objects.filter(subject__name__contains='全
 ```
-#Django模型最佳实践
+####Django模型最佳实践
     正确的为模型和关系字段命名。
     设置适当的related_name属性。
     用OneToOneField代替ForeignKeyField(unique=True)。
@@ -233,7 +233,7 @@ Teacher.objects.filter(subject__name__contains='全
     定义__str__方法。
     不要将数据文件放在同一个目录中。
 
-#实现用户跟踪
+####实现用户跟踪
     URl重写：所谓URL重写就是在URL中携带sessionid
     隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
         <input type="hidden" name="sessionid" value="123456">
