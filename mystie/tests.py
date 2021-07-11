@@ -5,5 +5,6 @@ from django.test import TestCase
 # Create your tests here.
 
 
-time = datetime
-print(time.datetime.now())
+t = 's'
+m = 'z'
+print('t=%s,m=%s',[t,m])

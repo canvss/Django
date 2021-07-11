@@ -6,6 +6,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import  HttpResponse
+
+
 def show_index(request):
     fruits =[
         'Apple','Orange','Pitaya','Durian','Mango','Pear','Peach','Grape'
@@ -23,3 +25,15 @@ def get_time(request):
 
 def show_weather(request):
     pass
+
+def year_archive(request,year):
+    print(year)
+    return HttpResponse(year)
+
+def year_month(request,year,month):
+    return HttpResponse(year+'年'+month+'月')
+
+
+def year_month_day(request,year,month,day):
+    print('%s年%s月%s日',{year,month,day})
+    return HttpResponse(year+'年'+month+'月'+day+'日')
