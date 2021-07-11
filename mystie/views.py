@@ -27,10 +27,9 @@ def show_weather(request):
     pass
 
 def year_archive(request,year):
-    print(year)
     return HttpResponse(year)
 
-def year_month(request,year,month):
+def year_month(request,month,year):
     return HttpResponse(year+'年'+month+'月')
 
 
