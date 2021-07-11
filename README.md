@@ -2,23 +2,23 @@
 ####目录结构
 ![](node_file/目录结构.png)
 ####安装app
-    python manage.py startapp first
+  ```  python manage.py startapp first```
 ####启动django
-    python manage.py runserver
+  ```  python manage.py runserver```
 ####安装django
-    pip install django==2.2.13
+   ``` pip install django==2.2.13```
 ####查看django
-    django-admin --version
+   ``` django-admin --version```
 
 ###配置文件settings.py
-    SESSION_COOKINE_AGE=1209600    session过期时间秒
+  ```  SESSION_COOKINE_AGE=1209600    session过期时间秒
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True  True在关闭浏览器窗口session就过期
     # 配置将会话对象放到缓存中存储
     SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
     # 配置使用哪一组缓存来保存会话
     SESSION_CACHE_ALIAS = 'default'
     SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
+```
 ```Python
 # 配置数据库
 DATABASES = {
@@ -136,7 +136,7 @@ class User(models.Model):
 
 
 #mysql驱动
-    pip install pymysql
+  ```  pip install pymysql
     以上配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
     我的【NAME】，写成了【Name】导致数据连接时提示：找不到这个数据库 。
     然后通过pip 安装pymysql ：pip install pymysql
@@ -145,15 +145,15 @@ class User(models.Model):
         pymysql.install_as_MySQLdb()
     执行python manage.py makemigrations
         python manage.py makemigra
-    再运行服务，应该是可以启动django服务的。
+    再运行服务，应该是可以启动django服务的。```
 
 #ORM来解决数据持久化问题，
-    使用ORM是为了实现对象模型到关系模型的双向转换，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。
+  ```  使用ORM是为了实现对象模型到关系模型的双向转换，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。
     利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类
-    python manage.py inspectdb > polls/models.py
+    python manage.py inspectdb > polls/models.py```
 
 #使用orm模型完成CRUD
-    python manage.py shell
+   ``` python manage.py shell```
 
 ```python
 from polls.models import Subject
@@ -218,6 +218,7 @@ Subject.objects.get(pk=1).teacher_set.all()
 Teacher.objects.filter(subject__name__contains='全
 ```
 ####Django模型最佳实践
+```
     正确的为模型和关系字段命名。
     设置适当的related_name属性。
     用OneToOneField代替ForeignKeyField(unique=True)。
@@ -232,8 +233,9 @@ Teacher.objects.filter(subject__name__contains='全
     用DecimalField来存储货币相关数据而不是FloatField。
     定义__str__方法。
     不要将数据文件放在同一个目录中。
-
+```
 ####实现用户跟踪
+```
     URl重写：所谓URL重写就是在URL中携带sessionid
     隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
         <input type="hidden" name="sessionid" value="123456">
@@ -243,6 +245,7 @@ Teacher.objects.filter(subject__name__contains='全
         IndexedDB
         Web SQL
         Cookies
+```
 
 ### 数据库操作
 ```sql
