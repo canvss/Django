@@ -1,21 +1,19 @@
 #PythonWeb框架Django
-
-####目录结构
-![](node_file/目录结构.png)
-
-####安装app
+###目录结构
+![](./node_file/目录结构.png)
+###安装app
   ```  
   python manage.py startapp first
-  ```
-####启动django
+  ```  
+###启动django
   ```  
   python manage.py runserver
   ```
-####安装django
+###安装django
    ``` 
    pip install django==2.2.13
    ```
-####查看django
+###查看django
    ``` 
    django-admin --version
    ```
@@ -61,7 +59,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_URL = '/static/'
 ```
 
-####路由配置：
+###路由配置：
 ```python
 urlpatterns = [
     path('hello/', views.show_index),
@@ -80,7 +78,7 @@ urlpatterns = [
 ```
 
 
-#### URL分发
+### URL分发
 ```Python
 # Django工程url.py
 urlpatterns = [
@@ -111,7 +109,7 @@ urlpatterns = [
 
 ```
 
-# views.py
+### views.py
 ```Python
 def show_index(request):
     fruits =[
@@ -129,7 +127,7 @@ def get_time(request):
     return render(request,'mystie/time.html',{'time':time})
 ```
 
-# models.py
+### models.py
 ```python
 class User(models.Model):
     no = models.AutoField(primary_key=True,verbose_name='编号')
@@ -146,7 +144,7 @@ class User(models.Model):
 ```
 
 
-#mysql驱动
+### mysql驱动
   ``` 
    pip install pymysql
     以上配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
@@ -234,7 +232,7 @@ Subject.objects.get(pk=1).teacher_set.all()
 # 查询学科名称有“全栈”二字的学科的老师
 Teacher.objects.filter(subject__name__contains='全
 ```
-####Django模型最佳实践
+###Django模型最佳实践
 ```
     正确的为模型和关系字段命名。
     设置适当的related_name属性。
@@ -251,7 +249,7 @@ Teacher.objects.filter(subject__name__contains='全
     定义__str__方法。
     不要将数据文件放在同一个目录中。
 ```
-####实现用户跟踪
+###实现用户跟踪
 ```
     URl重写：所谓URL重写就是在URL中携带sessionid
     隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
