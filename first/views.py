@@ -13,8 +13,11 @@ def show_index(request):
     #第一个参数request对象
     #第二个参数返回需要渲染静态网页名字
     #第三个返回需要渲染到页面数据
-    return render(request,'index.html',{'fruits':selected_fruits})
+    return render(request, 'polls/index.html', {'fruits':selected_fruits})
 
+def get_time(request):
+
+    return render(request,'')
 
 def show_weather(request):
     pass

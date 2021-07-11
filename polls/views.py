@@ -9,7 +9,7 @@ from polls.utils import *
 
 def show_subjects(request):
     subjects = Subject.objects.all().order_by('no')
-    return render(request,'subjects.html',{'subjects':subjects})
+    return render(request, 'polls/subjects.html', {'subjects':subjects})
 
 def show_teachers(request: HttpRequest) -> HttpResponse:
     if request.session.get('userid'):
@@ -19,7 +19,7 @@ def show_teachers(request: HttpRequest) -> HttpResponse:
             if sno:
                 subject = Subject.objects.only('name').get(no=sno)
                 Teacher.objects.filter(subject=subject).order_by('no')
-                return render(request,'teachers.html',{
+                return render(request, 'polls/teachers.html', {
                     'subject':subject,
                     'teachers':teachers
                 })
@@ -60,12 +60,12 @@ def login(request: HttpRequest) -> HttpResponse:
             if user:
                 request.session['userid'] = user.no
                 request.session['username'] = user.username
-                return render(request, 'header.html')
+                return render(request, 'polls/header.html')
             else:
                 hint = '用户名或密码错误'
         else:
             hint = '请输入有效的用户名和密码'
-    return render(request, 'login.html', {'hint':hint})
+    return render(request, 'polls/login.html', {'hint':hint})
 
 #注销
 def logout(request):
@@ -83,4 +83,4 @@ def get_captcha(request: HttpRequest) -> HttpResponse:
 
 
 def register(request: HttpRequest) -> HttpResponse:
-    return render(request,'register.html')
+    return render(request, 'polls/register.html')
