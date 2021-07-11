@@ -1,6 +1,6 @@
 # PythonWeb框架Django
 ### 目录结构
-![](./node_file/目录结构.png)
+![](/node_file/目录结构.png)
 ### 安装app
   ```  
   python manage.py startapp first
