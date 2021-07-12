@@ -1,7 +1,13 @@
 # PythonWeb框架Django
-### 目录结构
 
-![](./node_file/img.png)
+### 安装django
+   ``` 
+   pip install django==2.2.13
+   ```
+### 查看django
+   ``` 
+   django-admin --version
+   ```
 
 ### 安装app
   ```  
@@ -11,14 +17,10 @@
   ```  
   python manage.py runserver
   ```
-### 安装django
-   ``` 
-   pip install django==2.2.13
-   ```
-### 查看django
-   ``` 
-   django-admin --version
-   ```
+
+### 目录结构
+
+![](./node_file/img.png)
 
 ### 配置文件settings.py
   ```  
