@@ -158,10 +158,10 @@ class User(models.Model):
 
 #### 在项目urls.py中为include定义namespace属性。
 ``` python
-url(r’^’,include(‘mystie.urls’,namespace=’mystie’)),
+re_path(r'^mystie/',include(('mystie.urls', 'mystie'))),
 ```
 
-![](./node_file/img_2.png)
+![](./node_file/img_4.png)
 
 #### 在应用的urls.py中为url定义name属性，并修改为ye。
 ``` python
@@ -196,6 +196,87 @@ re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
         print(url)
         return HttpResponse(year)
  ```   
+
+### django内置转换器
+#### converters源码
+```  python
+class IntConverter:
+    regex = '[0-9]+'
+
+    def to_python(self, value):
+        return int(value)
+
+    def to_url(self, value):
+        return str(value)
+
+
+class StringConverter:
+    regex = '[^/]+'
+
+    def to_python(self, value):
+        return value
+
+    def to_url(self, value):
+        return value
+
+
+class UUIDConverter:
+    regex = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
+    def to_python(self, value):
+        return uuid.UUID(value)
+
+    def to_url(self, value):
+        return str(value)
+    
+```  
+1、path
+```  python
+    path('student/<path:p>', views.stu_path),
+ ```  
+2、int
+ ```  python
+    path('student/<int:id>', views.student),
+ ```  
+
+#### 总结：django中有5中内置转换器
+    str：除了斜杠/以外所有的字符都是可以的 。 默认转换器
+    int：只有是一个或者多个的阿拉伯数字。
+    path：所有的字符都是满足的。
+    uuid：只有满足uuid形式的字符串才行。
+    slug：英文中的横杆或者英文字符或者阿拉伯数字或者下划线才满足。
+    
+### 自定义转换器
+1、创建一个自定义converter类
+
+![](./node_file/img_5.png)
+
+NumConverter.py
+  ```   python
+  class NumConverter:
+    regex = '[0-9]{2}'
+    def to_python(self, value):
+        return int(value)
+
+    def to_url(self, value):
+        pass
+  
+  ```
+2、注册自定义转换器
+urls.py
+  ```   python
+register_converter(NumConverter,'mynum')
+```
+
+3、使用自定义转换器
+  ```   python
+path('testMyCon/<mynum:id>',views.testMyCon),
+```
+
+4、访问
+
+![](./node_file/img_6.png)
+
 ### mysql驱动
   ``` 
    pip install pymysql

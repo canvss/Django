@@ -50,3 +50,17 @@ def login(request):
             return HttpResponse('登录成功！！！')
         else:
             return HttpResponse('登录失败！')
+
+
+def student(request,id):
+    print(type(id))
+    return HttpResponse('student id = %s'%id)
+
+def stu_path(request,p):
+    print(type(p))
+    return HttpResponse('this is stu_path')
+
+
+def testMyCon(request,id):
+    print(type(id))
+    return HttpResponse('this is my diy converters')
