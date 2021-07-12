@@ -83,8 +83,8 @@ urlpatterns = [
 
 
 ### URL分发
+#### url.py
 ```Python
-# Django工程url.py
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', register),
@@ -113,7 +113,7 @@ urlpatterns = [
 
 ```
 
-### views.py
+#### views.py
 ```Python
 def show_index(request):
     fruits =[
@@ -131,7 +131,7 @@ def get_time(request):
     return render(request,'mystie/time.html',{'time':time})
 ```
 
-### models.py
+#### models.py
 ```python
 class User(models.Model):
     no = models.AutoField(primary_key=True,verbose_name='编号')
@@ -147,7 +147,55 @@ class User(models.Model):
         verbose_name_plural = '用户'
 ```
 
+### URL反向解析
+    1、定义：
+        随着功能的增加会出现更多的视图，可能之前配置的正则表达式不够准确，于是就要修改正则表达式，但是正则表达式一旦修改了，之前所有对应的超链接
+        都要修改，真是一件麻烦的事情，而且可能还会漏掉一些超链接忘记修改，有办法让链接根据正则表达式动态生成吗？ 就是用反向解析的办法。
+    
+    2、使用方法：
+        定义url时，需要为include定义namespace属性，为url定义name属性
+        使用时，在模板中使用url标签，在视图中使用reverse函数，根据正则表达式动态生成地址，减轻后期维护成本。
 
+#### 在项目urls.py中为include定义namespace属性。
+``` python
+url(r’^’,include(‘mystie.urls’,namespace=’mystie’)),
+```
+
+![](./node_file/img_2.png)
+
+#### 在应用的urls.py中为url定义name属性，并修改为ye。
+``` python
+re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
+ ```    
+
+![](./node_file/img_3.png)
+
+#### 在html模版中使用URL别名
+ ```  html
+ <form action={% url 'login' %} method="post">
+        <div>
+            <label for="username">用户名</label>
+            <input name="username" type="text" >
+        </div>
+        <div>
+            <label for="password">密码</label>
+            <input type="password" name="pwd">
+        </div>
+        <div class="c3-1">
+            <input type="submit" value="登录">
+        </div>
+    </form> 
+ ```   
+### 在视图中使用重定向传递位置参数
+```   python
+    from django.shortcuts import render
+    
+    def year_archive(request,year):
+        #使用重定向传递位置参数
+        url = reverse('ye',args=(2020,))
+        print(url)
+        return HttpResponse(year)
+ ```   
 ### mysql驱动
   ``` 
    pip install pymysql

@@ -1,11 +1,11 @@
 from datetime import datetime
 from random import sample
-
 from django.shortcuts import render
 
 
 # Create your views here.
 from django.http import  HttpResponse
+from django.urls import reverse
 
 
 def show_index(request):
@@ -27,6 +27,8 @@ def show_weather(request):
     pass
 
 def year_archive(request,year):
+    url = reverse('ye',args=(2020,))
+    print(url)
     return HttpResponse(year)
 
 def year_month(request,month,year):
