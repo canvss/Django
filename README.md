@@ -1,28 +1,51 @@
+![](./node_file/img_17.png)
+
 # PythonWeb框架Django
+
+一、 Django流程介绍
+
+![](./node_file/img_18.png)
+
+MVC是众所周知的模式，即：将应用程序分解成三个组成部分:model(模型),view(视图),和 controller(控制 器)。其中：
+
+      M——管理应用程序的状态（通常存储到数据库中），并约束改变状态的行为（或者叫做“业务规则”）。
+      C——接受外部用户的操作，根据操作访问模型获取数据，并调用“视图”显示这些数据。控制器是将“模型”和“视图”隔离，并成为二者之间的联系纽带。
+      V——负责把数据格式化后呈现给用户。
+
+Django也是一个MVC框架。但是在Django中，控制器接受用户输入的部分由框架自行处理，所以 Django 里更关注的是模型（Model）、模板(Template)和视图（Views），称为 MTV模式：
+
+    M 代表模型（Model），即数据存取层。 该层处理与数据相关的所有事务： 如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等。
+
+    T 代表模板(Template)，即表现层。 该层处理与表现相关的决定： 如何在页面或其他类型文档中进行显示。
+
+    V 代表视图（View），即业务逻辑层。 该层包含存取模型及调取恰当模板的相关逻辑。 你可以把它看作模型与模板之间的桥梁。
+
 
 ### 安装django
    ``` 
    pip install django==2.2.13
    ```
-### 查看django
+#### 查看django
    ``` 
    django-admin --version
    ```
+#### 创建django项目
+    django-admin startproject mysite
 
-### 安装app
+#### 创建app
   ```  
   python manage.py startapp first
   ```  
-### 启动django
+#### 启动django
   ```  
   python manage.py runserver
   ```
 
-### 目录结构
+#### 目录结构
 
 ![](./node_file/img.png)
 
-### 配置文件settings.py
+#### 配置文件settings.py
   ```  
     SESSION_COOKINE_AGE=1209600    session过期时间秒
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True  True在关闭浏览器窗口session就过期
