@@ -1,6 +1,8 @@
-![](./node_file/img_17.png)
+![](./node_file/img_19.png)
 
 # PythonWeb框架Django
+    Django是一个开放源代码的Web应用框架，由Python写成,采用了MT'V的框架模式.即Model,View,Template组成.许多成功的网站和APP都基于Django，
+    说到底,其实Django内部就是对 Socket 连接的强大封装.
 
 一、 Django流程介绍
 
@@ -25,10 +27,16 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
    ``` 
    pip install django==2.2.13
    ```
+
+![](./node_file/img_20.png)
+
 #### 查看django
    ``` 
    django-admin --version
    ```
+
+![](./node_file/img_21.png)
+
 #### 创建django项目
     django-admin startproject mysite
 
@@ -40,6 +48,9 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
   ```  
   python manage.py runserver
   ```
+
+![](./node_file/img_17.png)
+
 
 #### 目录结构
 
