@@ -64,3 +64,8 @@ def stu_path(request,p):
 def testMyCon(request,id):
     print(type(id))
     return HttpResponse('this is my diy converters')
+
+
+def index(request):
+
+    return HttpResponse(reverse('mystie:index'))

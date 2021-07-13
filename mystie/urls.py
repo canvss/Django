@@ -27,4 +27,6 @@ urlpatterns = [
     path('testMyCon/<mynum:id>',views.testMyCon),
     path('student/<int:id>', views.student),
     path('student/<path:p>', views.stu_path),
+
+    re_path(r'^index/',views.index,name = 'index')
 ]

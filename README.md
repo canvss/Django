@@ -156,14 +156,7 @@ class User(models.Model):
         定义url时，需要为include定义namespace属性，为url定义name属性
         使用时，在模板中使用url标签，在视图中使用reverse函数，根据正则表达式动态生成地址，减轻后期维护成本。
 
-#### 在项目urls.py中为include定义namespace属性。
-``` python
-re_path(r'^mystie/',include(('mystie.urls', 'mystie'))),
-```
-
-![](./node_file/img_4.png)
-
-#### 在应用的urls.py中为url定义name属性，并修改为ye。
+#### 在应用的mystie/urls.py中为url定义name属性，并修改为ye。
 ``` python
 re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
  ```    
@@ -186,7 +179,7 @@ re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
         </div>
     </form> 
  ```   
-### 在视图中使用重定向传递位置参数
+#### 在视图中使用重定向传递位置参数
 ```   python
     from django.shortcuts import render
     
@@ -196,6 +189,62 @@ re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
         print(url)
         return HttpResponse(year)
  ```   
+
+### 名称空间
+`       命名空间（英语：Namespace）是表示标识符的可见范围。一个标识符可在多个命名空间中定义，它在不同命名空间中的含义是互不相干的。
+这样，在一个新的命名空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其它命名空间中。`
+#### 创建两个应用mystie、model,为两个应用的url设置name属性为index
+mystie/urls.py
+ ```   python
+re_path(r'^index/',views.index,name = 'index')
+
+```
+mystie/views.py
+ ```   python
+def index(request):
+    return HttpResponse(reverse('index'))
+```
+
+model/urls.py
+ ```   python
+re_path(r'^index/',views.index,name = 'index')
+```  
+model/views.py
+ ```   python
+def index(request):
+    return HttpResponse(reverse('index'))
+```  
+访问 127.0.0.1:8000/model/index/
+
+![](./node_file/img_13.png)
+
+访问 127.0.0.1:8000/mystie/index/
+
+![](./node_file/img_14.png)
+
+
+`
+由于name没有作用域，Django在反解URL时，会在项目全局顺序搜索，当查找到第一个name指定URL时，立即返回我们在开发项目时，
+会经常使用name属性反解出URL， 当不小心在不同的app的urls中定义相同的name时，可能会导致URL反解错误，为了避免这种事情发生，
+引入了命名空间。
+`
+#### 在Django项目urls.py中为include定义namespace属性。
+``` python
+  # 使用分发
+    re_path(r'^mystie/',include(('mystie.urls','mystie' ))),
+    re_path(r'^model/',include(('model.urls','model'))),
+```
+修改mystie/views.py
+```python
+def index(request):
+    return HttpResponse(reverse('mystie:index'))
+```
+
+修改model/views.py
+```python
+def index(request):
+    return HttpResponse(reverse('model:index'))
+```
 
 ### django内置转换器
 #### converters源码
@@ -277,6 +326,52 @@ path('testMyCon/<mynum:id>',views.testMyCon),
 
 ![](./node_file/img_6.png)
 
+### 视图层响应请求
+#### 第一种HttpResponse
+  ``` python
+    def index(request):
+
+    return HttpResponse('<p1>OK</p1>')
+  ```
+访问 127.0.0.1:8000/model/index/
+
+![](./node_file/img_7.png)
+
+#### 第二种通过rander渲染
+ ```python
+def login(request):
+    return render(request,'model/login.html')
+ ```
+访问 127.0.0.1:8000/model/login/
+
+![](./node_file/img_8.png)
+
+
+### request请求对象
+ ```python
+def login(request):
+    print('请求方法：',request.method)
+    print('path:',request.path)
+    print('path_info:',request.path_info)
+    print('GET:',request.GET)
+    print('POST:',request.POST)
+    return render(request,'model/login.html')
+ ```
+访问 127.0.0.1:8000/model/login/
+
+![](./node_file/img_9.png)
+
+访问 127.0.0.1:8000/model/login/?name='endless' & age = 22
+
+![](./node_file/img_10.png)
+
+当点击登录时将发起post
+
+![](./node_file/img_11.png)
+
+控制台输出
+
+![](./node_file/img_12.png)
 ### mysql驱动
   ``` 
    pip install pymysql
