@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>
+        姓名：{{ info.name }} &nbsp; 年龄：{{ info.age }}
+    </p>
+    <p>
+        {{ jack.age }}
+    </p>
+    <p>
+        person_list.1.name : {{ person_list.1.name}}
+    </p>
+    <br/>
+    <h1>{{ b }}</h1>
+    <p>
+        {{ list_t.0 }}
+    </p>
+    <br>
+    <h1>Django 内置过滤器 </h1>
+    <p>{{ size_file|filesizeformat }}</p>
+    <p>{{ Django_text|truncatechars:'10' }}</p>
+    <p>{{ ctime|date:'Y-m-d h:m:s'}}</p>
+    <p>{{ p |safe}}</p>
+    <p>{{ person_list.0.name|upper }}</p>
+
+    <h1>标签</h1>
+    <p>
+        {% for i in list_t %}
+            <p>{{ i }}</p>
+        {% endfor %}
+    </p>
+
+    </p> <p>
+        {% for i in info %}
+            <p>{{ i }}</p>
+        {% endfor %}
+    <p>
+        {% for p in person_list %}
+            <p>{{ forloop.counter}}{{  p.name}}    {{  p.age}}</p>
+        {% empty %}
+            <p>列表为空</p>
+        {% endfor %}
+    </p>
+    <p>
+        {% if info.name == 'tom' %}
+            <P>yes {{ info.name }}</P>
+        {% else %}
+            <p>no </p>
+        {% endif %}
+    </p>
+    <p>
+        {% if name  %}
+            <h4>Hi{{ name }}</h4>
+            <a href="">注销</a>
+        {% else %}
+            <a href="">登录</a>
+        {% endif %}
+    </p>
+
+    <br>
+    <h1>自定义标签和过滤器</h1>
+    {%load  my_tags%}
+    <p>
+        {{ num|multi_filter:10 }}
+    </p>
+    <p>
+        {% multi_tag 10 20 10 %}
+    </p>
+</body>
+</html>

@@ -6,7 +6,8 @@
 </head>
 <body>
 <div>
-    <form action='' method="post">
+    <form action='/model/index/' method="post">
+        {% csrf_token %}
         <div>
             <label for="username">用户名</label>
             <input name="username" type="text" >

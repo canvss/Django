@@ -406,6 +406,234 @@ def login(request):
 控制台输出
 
 ![](./node_file/img_12.png)
+
+### 模版语法
+    只要是在html里面有模板语法就不是html文件了，这样的文件就叫做模板。
+#### Django中模版语法只有两种写法
+    1、{{ }} 
+    2、{% %} 
+```python
+def index(request):
+
+    class Person(object):
+        def __init__(self,name,age):
+            self.name = name
+            self.age = age
+
+    jack = Person('jack',23)
+    info = {'name': 'tom', 'job':'python'}
+    return render(request,'model/index.html',{'jack':jack,'info':info})
+```
+##### 使用这样字典方式传入参数，如果有1000个那么怎么办？
+    我们可以使用Django中的locals()函数，locals() 函数会以字典类型返回当前位置的全部局部变量。
+
+```python
+def index(request):
+
+    class Person(object):
+        def __init__(self,name,age):
+            self.name = name
+            self.age = age
+
+    jack = Person('jack',23)
+    info = {'name': 'tom', 'job':'python'}
+    end = Person('endless', 22)
+    b = True
+    person_list = [jack, end]
+    p = '<h2>hello world</h2>'
+    list_t = [1, 2, 6, 7, 22, 90]
+    return render(request, 'model/index.html', locals())
+```
+
+在模版文件中引用变量
+
+```html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>
+        {{ info }}
+    </p>
+    <p>
+        {{ jack }}
+    </p>
+    <p>
+        {{ person_list }}
+    </p>
+    <br/>
+    <h1>{{ b }}</h1>
+    <p>
+        {{ list_t }}
+    </p>
+</body>
+</html>
+```
+
+访问 127.0.0.1:8000/model/index/
+
+![](./node_file/img_22.png)
+
+**模版文件中获取变量的值**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>
+        姓名：{{ info.name }} &nbsp; 年龄：{{ info.age }}
+    </p>
+    <p>
+        {{ jack.age }}
+    </p>
+    <p>
+        person_list.1.name : {{ person_list.1.name}}
+    </p>
+    <br/>
+    <h1>{{ b }}</h1>
+    <p>
+        {{ list_t.0 }}
+    </p>
+</body>
+</html>
+```
+
+##### 返回结果
+
+![](./node_file/img_23.png)
+
+#### 过滤器
+    常用过滤器：random、filesizeformat、truncatechars、date、safe、upper
+```html
+<html>
+    <body>
+        <h1>Django 内置过滤器 </h1>
+        <p>{{ size_file|filesizeformat }}</p>
+        <p>{{ Django_text|truncatechars:'10' }}</p>
+        <p>{{ ctime|date:'Y-m-d h:m:s'}}</p>
+        <p>{{ p |safe}}</p>
+    </body>
+</html>
+```
+
+![](./node_file/img_24.png)
+
+CSRF
+
+    跨站请求伪造（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。[1] 跟跨网站脚本（XSS）相比，XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
+
+在模版文件中加入
+
+```html
+   {% csrf_token %}
+```
+
+![](./node_file/img_25.png)
+
+****让我们看看骆昊的理解** https://github.com/epover/Python-100-Days/**
+###### 模板指令{% csrf_token %}为表单添加一个隐藏域（大家可以在浏览器中显示网页源代码就可以看到这个指令生成的type属性为hidden的input标签），它的作用是在表单中生成一个随机令牌（token）来防范跨站请求伪造（简称为CSRF），这也是Django在提交表单时的硬性要求。如果我们的表单中没有这样的令牌，那么提交表单时，Django框架会产生一个响应状态码为403的响应（禁止访问），除非我们设置了免除CSRF令牌。下图是一个关于CSRF简单生动的例子。
+
+![](./node_file/img_26.png)
+
+**### 标签**
+#### for循环
+```html
+    <p>
+        {% for i in list_t %}
+            <p>{{ i }}</p>
+        {% endfor %}
+    </p>
+    </p> <p>
+        {% for i in info %}
+            <p>{{ i }}</p>
+        {% endfor %}
+    <p>
+        {% for p in person_list %}
+            <p>{{ forloop.counter}}{{  p.name}}    {{  p.age}}</p>
+        {% empty %}
+            <p>列表为空</p>
+        {% endfor %}
+    </p>
+```
+
+###### 响应效果
+
+![](./node_file/img_27.png)
+
+### if else
+```html
+ <p>
+        {% if info.name == 'tom' %}
+            <P>yes {{ info.name }}</P>
+        {% else %}
+            <p>no </p>
+        {% endif %}
+    </p>
+    <p>
+        {% if name  %}
+            <h4>Hi{{ name }}</h4>
+            <a href="">注销</a>
+        {% else %}
+            <a href="">登录</a>
+        {% endif %}
+ </p>
+```
+###### 响应效果
+
+![](./node_file/img_28.png)
+
+
+### 自定义过滤器、标签
+    Django虽然为我们内置了二十多种标签和六十多种过滤器，但是需求是各种各样的，总有一款你cover不到。Django为我们提供了自定义的机制，可以通过使用Python代码，自定义标签和过滤器来扩展模板引擎，然后使用{% load %}标签加载它们。
+
+#### 1.安装app
+
+![](./node_file/img_29.png)
+
+#### 2.在app中创建templatetags文件夹，下面创建自己的py文件
+
+![](./node_file/img_30.png)
+
+```python
+from django import template
+# register是唯一的
+register = template.Library()
+
+# 注册过滤器
+@register.filter
+def multi_filter(x,y):
+    return x*y
+
+# 注册标签
+@register.simple_tag
+def multi_tag(x,y,z):
+    return x*y*z
+```
+### 3.在模版文件中引入自己的标签过滤器文件
+```html
+{%load  my_tags%}
+```
+### 4.使用过滤器和标签
+```html
+<h1>自定义标签和过滤器</h1>
+    {%load  my_tags%}
+    <p>
+        {{ num|multi_filter:10 }}
+    </p>
+    <p>
+        {% multi_tag 10 20 10 %}
+    </p>
+```
+
+响应结果
+
+![](./node_file/img_31.png)
+
 ### mysql驱动
   ``` 
    pip install pymysql
