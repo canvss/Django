@@ -1,18 +1,19 @@
 ![](./node_file/img_19.png)
 
 # PythonWeb框架Django
-    Django是一个开放源代码的Web应用框架，由Python写成,采用了MT'V的框架模式.即Model,View,Template组成.许多成功的网站和APP都基于Django，
-    说到底,其实Django内部就是对 Socket 连接的强大封装.
+
+###### Django是一个开放源代码的Web应用框架，由Python写成,采用了MTV的框架模式.即Model,View,Template组成.许多成功的网站和APP都基于Django， 说到底,其实Django内部就是对 Socket 连接的强大封装.
 
 一、 Django流程介绍
 
 ![](./node_file/img_18.png)
 
-MVC是众所周知的模式，即：将应用程序分解成三个组成部分:model(模型),view(视图),和 controller(控制 器)。其中：
-
-      M——管理应用程序的状态（通常存储到数据库中），并约束改变状态的行为（或者叫做“业务规则”）。
-      C——接受外部用户的操作，根据操作访问模型获取数据，并调用“视图”显示这些数据。控制器是将“模型”和“视图”隔离，并成为二者之间的联系纽带。
-      V——负责把数据格式化后呈现给用户。
+#### MVC是众所周知的模式，即：将应用程序分解成三个组成部分:model(模型),view(视图),和 controller(控制 器)。其中：
+    M——管理应用程序的状态（通常存储到数据库中），并约束改变状态的行为（或者叫做“业务规则”）。
+    
+    C——接受外部用户的操作，根据操作访问模型获取数据，并调用“视图”显示这些数据。控制器是将“模型”和“视图”隔离，并成为二者之间的联系纽带。
+    
+    V——负责把数据格式化后呈现给用户。
 
 Django也是一个MVC框架。但是在Django中，控制器接受用户输入的部分由框架自行处理，所以 Django 里更关注的是模型（Model）、模板(Template)和视图（Views），称为 MTV模式：
 
@@ -67,7 +68,10 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
     SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 ```
 ```Python
-# 配置数据库
+'''
+配置数据库
+以下配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
+'''
 DATABASES = {
     'default': {
         #数据库引擎配置
@@ -185,7 +189,7 @@ class User(models.Model):
     1、定义：
         随着功能的增加会出现更多的视图，可能之前配置的正则表达式不够准确，于是就要修改正则表达式，但是正则表达式一旦修改了，之前所有对应的超链接
         都要修改，真是一件麻烦的事情，而且可能还会漏掉一些超链接忘记修改，有办法让链接根据正则表达式动态生成吗？ 就是用反向解析的办法。
-    
+        
     2、使用方法：
         定义url时，需要为include定义namespace属性，为url定义name属性
         使用时，在模板中使用url标签，在视图中使用reverse函数，根据正则表达式动态生成地址，减轻后期维护成本。
@@ -224,9 +228,11 @@ re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
         return HttpResponse(year)
  ```   
 
+
 ### 名称空间
-`       命名空间（英语：Namespace）是表示标识符的可见范围。一个标识符可在多个命名空间中定义，它在不同命名空间中的含义是互不相干的。
-这样，在一个新的命名空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其它命名空间中。`
+
+###### 命名空间（英语：Namespace）是表示标识符的可见范围。一个标识符可在多个命名空间中定义，它在不同命名空间中的含义是互不相干的。这样，在一个新的命名空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其它命名空间中。
+
 #### 创建两个应用mystie、model,为两个应用的url设置name属性为index
 mystie/urls.py
  ```   python
@@ -256,12 +262,8 @@ def index(request):
 
 ![](./node_file/img_14.png)
 
+###### 由于name没有作用域，Django在反解URL时，会在项目全局顺序搜索，当查找到第一个name指定URL时，立即返回我们在开发项目时， 会经常使用name属性反解出URL， 当不小心在不同的app的urls中定义相同的name时，可能会导致URL反解错误，为了避免这种事情发生， 引入了命名空间。
 
-`
-由于name没有作用域，Django在反解URL时，会在项目全局顺序搜索，当查找到第一个name指定URL时，立即返回我们在开发项目时，
-会经常使用name属性反解出URL， 当不小心在不同的app的urls中定义相同的name时，可能会导致URL反解错误，为了避免这种事情发生，
-引入了命名空间。
-`
 #### 在Django项目urls.py中为include定义namespace属性。
 ``` python
   # 使用分发
@@ -408,7 +410,9 @@ def login(request):
 ![](./node_file/img_12.png)
 
 ### 模版语法
-    只要是在html里面有模板语法就不是html文件了，这样的文件就叫做模板。
+
+###### 只要是在html里面有模板语法就不是html文件了，这样的文件就叫做模板。
+
 #### Django中模版语法只有两种写法
     1、{{ }} 
     2、{% %} 
@@ -425,7 +429,8 @@ def index(request):
     return render(request,'model/index.html',{'jack':jack,'info':info})
 ```
 ##### 使用这样字典方式传入参数，如果有1000个那么怎么办？
-    我们可以使用Django中的locals()函数，locals() 函数会以字典类型返回当前位置的全部局部变量。
+
+###### 我们可以使用Django中的locals()函数，locals() 函数会以字典类型返回当前位置的全部局部变量。
 
 ```python
 def index(request):
@@ -508,7 +513,8 @@ def index(request):
 ![](./node_file/img_23.png)
 
 #### 过滤器
-    常用过滤器：random、filesizeformat、truncatechars、date、safe、upper
+
+###### 常用过滤器：random、filesizeformat、truncatechars、date、safe、upper
 ```html
 <html>
     <body>
@@ -523,11 +529,11 @@ def index(request):
 
 ![](./node_file/img_24.png)
 
-CSRF
+**CSRF**
 
-    跨站请求伪造（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。[1] 跟跨网站脚本（XSS）相比，XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
+###### 跨站请求伪造（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。[1] 跟跨网站脚本（XSS）相比，XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
 
-在模版文件中加入
+解决csrf在模版文件中加入
 
 ```html
    {% csrf_token %}
@@ -535,10 +541,11 @@ CSRF
 
 ![](./node_file/img_25.png)
 
-****让我们看看骆昊的理解** https://github.com/epover/Python-100-Days/**
 ###### 模板指令{% csrf_token %}为表单添加一个隐藏域（大家可以在浏览器中显示网页源代码就可以看到这个指令生成的type属性为hidden的input标签），它的作用是在表单中生成一个随机令牌（token）来防范跨站请求伪造（简称为CSRF），这也是Django在提交表单时的硬性要求。如果我们的表单中没有这样的令牌，那么提交表单时，Django框架会产生一个响应状态码为403的响应（禁止访问），除非我们设置了免除CSRF令牌。下图是一个关于CSRF简单生动的例子。
 
 ![](./node_file/img_26.png)
+
+来源骆昊https://github.com/epover/Python-100-Days/
 
 ### 标签
 #### for循环
@@ -589,7 +596,8 @@ CSRF
 
 
 ### 自定义过滤器、标签
-    Django虽然为我们内置了二十多种标签和六十多种过滤器，但是需求是各种各样的，总有一款你cover不到。Django为我们提供了自定义的机制，可以通过使用Python代码，自定义标签和过滤器来扩展模板引擎，然后使用{% load %}标签加载它们。
+
+###### Django虽然为我们内置了二十多种标签和六十多种过滤器，但是需求是各种各样的，总有一款你cover不到。Django为我们提供了自定义的机制，可以通过使用Python代码，自定义标签和过滤器来扩展模板引擎，然后使用{% load %}标签加载它们。
 
 #### 1.安装app
 
@@ -634,28 +642,133 @@ def multi_tag(x,y,z):
 
 ![](./node_file/img_31.png)
 
-### mysql驱动
-  ``` 
-   pip install pymysql
-    以上配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
-    我的【NAME】，写成了【Name】导致数据连接时提示：找不到这个数据库 。
-    然后通过pip 安装pymysql ：pip install pymysql
-    再在项目配置目录里的init.py文件中写入：
-        import pymysql
-        pymysql.install_as_MySQLdb()
-    执行python manage.py makemigrations
-        python manage.py makemigra
-    再运行服务，应该是可以启动django服务的。
-   ```
 
-### ORM来解决数据持久化问题
-  ```  
-    使用ORM是为了实现对象模型到关系模型的双向转换，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。
-    利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类
+
+# 使用ORM来解决数据持久化问题
+### ORM 就是通过实例对象的语法，完成关系型数据库的操作的技术，是"对象-关系映射"（Object/Relational Mapping） 的缩写。
+
+![](./node_file/img_36.png)
+
+###### 如果还是不能理解那么可以看阮一峰讲解的ORM 实例教程http://www.ruanyifeng.com/blog/2019/02/orm-tutorial.html
+
+
+
+###### 安装pymysql驱动
+```text
+pip install pymysql
+```
+
+###### 在APP配置ORM/init.py文件中写入：
+```
+import pymysql
+pymysql.install_as_MySQLdb()
+``` 
+
+###### 在settings.py中安装app
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'ORM',
+]
+```
+
+###### 在ORM/models.py中创建类
+```python
+from django.db import models
+class Book(models.Model):
+    no = models.AutoField(primary_key=True,verbose_name="no")
+    title = models.CharField(max_length=32,unique=True) #unique唯一性
+    pub_date = models.DateField()
+    price = models.DecimalField(max_digits=8,decimal_places=2)  #999999.99
+    press = models.CharField(max_length=32)
+```
+
+###### 执行orm对象模型到关系模型转换（将类转换成sql）
+ ```
+python manage.py makemigrations
+python manage.py migrate
+ ```  
+
+#### python manage.py makemigrations
+
+######  这个命令是记录我们对models.py的所有改动，并且将这个改动迁移到migrations这个文件下生成一个文件例如：0001文件，如果你接下来还要进行改动的话可能生成就是另外一个文件不一定都是0001文件，但是这个命令并没有作用到数据库
+
+#### python manage.py migrate
+
+###### 这条命令的主要作用就是把这些改动作用到数据库也就是执行migrations里面新改动的迁移文件更新数据库，比如创建数据表， 或者增加字段属性
+
+**注意：另外一个需要注意的是这两个命令默认情况下是作用于全局，也就是对所有最新更改的models或者migrations下面的迁移文件进行对应的操作，
+如果要想仅仅对部分app进行作用的话  则执行如下命令：**
+```
+python manage.py makemigrations appname,
+python manage.py migrate appname,
+如果要想精确到某一个迁移文件则可以使用：
+python manage.py migrate appname 文件名
+```
+
+###### 反向生成
+
     python manage.py inspectdb > polls/models.py
-   ```
 
-#使用orm模型完成CRUD
+### 对数据库进行操作
+
+#### 1、添加数据
+```python
+    # 第一种方法
+     book = models.Book(title='JAVA编程思想',pub_date='2020-12-3',press='人民出版社',price=89)
+     book.save()
+    # 第二种方法
+     book2 = models.Book.objects.create(title='RESTful API 设计指南',pub_date='2021-7-9',press='中国邮电出版社',price=199)
+     print(book.price)
+     print(type(book))
+```
+控制台输出： 
+
+![](./node_file/img_32.png)
+
+#### 2、查询
+```python
+    # 查询所有
+     book = models.Book.objects.all()[1]
+     print(book)
+     for i in book:
+        print(i.title)
+     # <class 'django.db.models.query.QuerySet'>
+     print(type(book))
+```
+控制台输出：
+
+![](./node_file/img_33.png)   
+
+
+```python
+    # 查询filter
+     book = models.Book.objects.filter(title='设计模式')
+     print(book[0].title)
+     print(type(book))
+```
+控制台输出：
+
+![](./node_file/img_34.png)
+
+```python
+    # 查询get 智能返回唯一一个对象
+    book = models.Book.objects.get(no=2)
+    print(type(book))
+    print(book.title)
+```
+控制台输出：
+
+![](./node_file/img_35.png)
+
+
+
+#### 在shell中使用orm模型完成CRUD
    ``` 
     python manage.py shell
    ```
