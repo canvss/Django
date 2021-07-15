@@ -645,7 +645,22 @@ def multi_tag(x,y,z):
 
 
 # 使用ORM来解决数据持久化问题
-### ORM 就是通过实例对象的语法，完成关系型数据库的操作的技术，是"对象-关系映射"（Object/Relational Mapping） 的缩写。
+
+### 什么是ORM？
+
+###### 使用面向对象编程，来操作关系型数据库。
+
+![](./node_file/img_37.png)
+
+### 简单说，ORM 就是通过实例对象的语法，完成关系型数据库的操作的技术，是"对象-关系映射"（Object/Relational Mapping） 的缩写。
+
+ORM 把数据库映射成对象。
+
+    数据库的表（table） --> 类（class）
+    记录（record，行数据）--> 对象（object）
+    字段（field）--> 对象的属性（attribute）
+
+![](./node_file/img_38.png)
 
 ![](./node_file/img_36.png)
 
