@@ -860,7 +860,7 @@ python manage.py migrate appname 文件名
 ```python
     # 升序
     book = models.Book.objects.orader_by('price')
-    # 降序
+    # 降序 
     book = models.Book.objects.orader_by('-price')
 ```
 
