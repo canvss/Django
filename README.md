@@ -731,6 +731,36 @@ python manage.py migrate appname 文件名
     python manage.py inspectdb > polls/models.py
 
 ### 对数据库进行操作
+常用查询方法：
+
+    <1> all():                 查询所有结果
+     
+    <2> filter(**kwargs):      它包含了与所给筛选条件相匹配的对象
+     
+    <3> get(**kwargs):         返回与所给筛选条件相匹配的对象，返回结果有且只有一个，如果符合筛选条件的对象超过一个或者没有都会抛出错误。
+     
+    <4> exclude(**kwargs):     它包含了与所给筛选条件不匹配的对象
+     
+    <5> values(*field):        返回一个ValueQuerySet——一个特殊的QuerySet，运行后得到的并不是一系列model的实例化对象，而是一个可迭代的字典序列
+     
+    <6> values_list(*field):   它与values()非常相似，它返回的是一个元组序列，values返回的是一个字典序列
+     
+    <7> order_by(*field):      对查询结果排序
+     
+    <8> reverse():             对查询结果反向排序，请注意reverse()通常只能在具有已定义顺序的QuerySet上调用(在model类的Meta中指定ordering或调用order_by()方法)。
+     
+    <9> distinct():            从返回结果中剔除重复纪录(如果你查询跨越多个表，可能在计算QuerySet时得到重复的结果。此时可以使用distinct()，注意只有在PostgreSQL中支持按字段去重。)
+     
+    <10> count():              返回数据库中匹配查询(QuerySet)的对象数量。
+     
+    <11> first():              返回第一条记录
+     
+    <12> last():               返回最后一条记录
+     
+    <13> exists():             如果QuerySet包含数据，就返回True，否则返回False
+    
+
+
 
 #### 1、添加数据
 ```python
@@ -747,6 +777,8 @@ python manage.py migrate appname 文件名
 ![](./node_file/img_32.png)
 
 #### 2、查询
+
+###### all()
 ```python
     # 查询所有
      book = models.Book.objects.all()[1]
@@ -758,9 +790,9 @@ python manage.py migrate appname 文件名
 ```
 控制台输出：
 
-![](./node_file/img_33.png)   
+![](./node_file/img_33.png)
 
-
+###### filter()
 ```python
     # 查询filter
      book = models.Book.objects.filter(title='设计模式')
@@ -771,6 +803,8 @@ python manage.py migrate appname 文件名
 
 ![](./node_file/img_34.png)
 
+###### get()
+
 ```python
     # 查询get 智能返回唯一一个对象
     book = models.Book.objects.get(no=2)
@@ -780,6 +814,58 @@ python manage.py migrate appname 文件名
 控制台输出：
 
 ![](./node_file/img_35.png)
+
+###### values()
+```python
+# values()
+    book = models.Book.objects.values('price')
+    # <QuerySet [{'price': Decimal('89.00')}, {'price': Decimal('58.00')}, {'price': Decimal('109.00')}, {'price': Decimal('199.00')}, {'price': Decimal('79.90')}, {'price': Decimal('199.00')}]>
+    print(book)
+```
+
+###### values_list()
+```python
+    book = models.Book.objects.values_list('price')
+     # <QuerySet [(Decimal('89.00'),), (Decimal('58.00'),), (Decimal('109.00'),), (Decimal('199.00'),), (Decimal('79.90'),), (Decimal('199.00'),)]>
+    print(book)
+```
+
+###### count()
+```python
+    print(models.Book.objects.count())
+```
+
+###### exists() 有记录返回True，没有记录返回flase
+```python
+     if models.Book.objects.exists():
+            temp = 'ok'
+     else:
+        temp = 'NO'
+    return HttpReponse(temp)
+```
+
+###### distinct()
+```python
+    book = models.Book.objects.values('price').distinct()
+    print(book)
+```
+
+###### exclude() 过滤掉'设计模式'
+```python
+    book = models.Book.objects.exclude('设计模式')
+    print(book)
+```
+
+###### orader_by()
+```python
+    # 升序
+    book = models.Book.objects.orader_by('price')
+    # 降序
+    book = models.Book.objects.orader_by('-price')
+```
+
+
+
 
 
 
