@@ -864,9 +864,50 @@ python manage.py migrate appname 文件名
     book = models.Book.objects.orader_by('-price')
 ```
 
+###### 模糊查询
 
+```python
+    # 模糊查询
+    # __startswith():以p开头;istartswith:不区分大小写
+    book_p = models.Book.objects.filter(title__istartswith='p')
+    print(book_p.values('title'))
 
+    #endswith()：以什么结尾的
+    book = models.Book.objects.filter(title__endswith='2')
+    print(book.values('title'))
 
+    # contains() 包含什么内容的
+    book = models.Book.objects.filter(title__icontains='hp')
+    print(book.values('title'))
+
+    # __year 对日期查询
+    book = models.Book.objects.filter(pub_date__year=2021)
+    print(book.values('title'))
+
+    #__in=[48,98] 查询包含48，98的
+    book = models.Book.objects.filter(price__in=[48,98,199])
+    print(book.values('title'))
+
+    # __gt 大于 __lt小于
+    print(models.Book.objects.filter(price__gt=100).values('price'))
+    print(models.Book.objects.filter(price__lt=100).values('price'))
+
+    # __range=[10,100] 介于之间
+    print(models.Book.objects.filter(price__range=[10,100]).values('price'))
+```
+
+###### 删除数据
+```python
+    # delete() 删除返回：(1, {'ORM.Book': 1}) 删除记录，表名，
+    ret = models.Book.objects.filter(title='php').delete()
+    print(ret)
+```
+###### 更新数据
+```python
+    # .update() 更新数据
+    ret = models.Book.objects.filter(title='php3').update(title='php')
+    print(ret)
+```
 
 
 #### 在shell中使用orm模型完成CRUD

@@ -70,4 +70,44 @@ def index(request):
     # distinct()
     book = models.Book.objects.values('price').distinct()
     print(book)
+
+    # models.Book.objects.create(title='php',pub_date='2021-6-7',price=47.8,press='四川出版社')
+    # models.Book.objects.create(title='php2', pub_date='2021-8-7', price=98.8, press='四川出版社')
+    # models.Book.objects.create(title='php3', pub_date='2020-6-7', price=48, press='四川出版社')
+
+    # 模糊查询
+    # __startswith():以p开头;istartswith:不区分大小写
+    book_p = models.Book.objects.filter(title__istartswith='p')
+    print(book_p.values('title'))
+
+    #endswith()：以什么结尾的
+    book = models.Book.objects.filter(title__endswith='2')
+    print(book.values('title'))
+
+    # contains() 包含什么内容的
+    book = models.Book.objects.filter(title__icontains='hp')
+    print(book.values('title'))
+
+    # __year 对日期查询
+    book = models.Book.objects.filter(pub_date__year=2021)
+    print(book.values('title'))
+
+    #__in=[48,98] 查询包含48，98的
+    book = models.Book.objects.filter(price__in=[48,98,199])
+    print(book.values('title'))
+
+    # __gt 大于 __lt小于
+    print(models.Book.objects.filter(price__gt=100).values('price'))
+    print(models.Book.objects.filter(price__lt=100).values('price'))
+
+    # __range=[10,100] 介于之间
+    print(models.Book.objects.filter(price__range=[10,100]).values('price'))
+
+    # delete() 删除返回：(1, {'ORM.Book': 1}) 删除记录，表名，
+    ret = models.Book.objects.filter(title='php').delete()
+    print(ret)
+
+    # .update() 更新数据
+    ret = models.Book.objects.filter(title='php3').update(title='php')
+    print(ret)
     return HttpResponse(temp)
