@@ -1025,4 +1025,5 @@ insert into `tb_user`
 values
     ('wangdachui', '1c63129ae9db9c60c3e8aa94d3e00495', '13122334455', now()),
     ('hellokitty', 'c6f8cf68e5f68b0aa4680e089ee4742c', '13890006789', now());
+    
 ```
