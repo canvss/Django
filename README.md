@@ -547,7 +547,7 @@ def index(request):
 
 ![](./node_file/img_26.png)
 
-来源骆昊https://github.com/epover/Python-100-Days/
+###### 来源骆昊https://github.com/epover/Python-100-Days/
 
 ### 标签
 #### for循环
@@ -668,7 +668,72 @@ ORM 把数据库映射成对象。
 
 ###### 如果还是不能理解那么可以看阮一峰讲解的ORM 实例教程http://www.ruanyifeng.com/blog/2019/02/orm-tutorial.html
 
+#### 在shell中使用orm模型完成CRUD
+   ``` 
+    python manage.py shell
+   ```
 
+```python
+from polls.models import Subject
+
+subject1 = Subject(name='Python全栈开发', intro='当下最热门的学科', is_hot=True)
+subject1.save()
+subject2 = Subject(name='全栈软件测试', intro='学习自动化测试的学科', is_hot=False)
+subject2.save()
+subject3 = Subject(name='JavaEE分布式开发', intro='基于Java语言的服务器应用开发', is_hot=True)
+删除
+subject = Subject.objects.get(no=2)
+subject.delete()
+更新
+subject = Subject.objects.get(no=1)
+subject.name = 'Python全栈+人工智能'
+subject.save()
+查询
+查询所有对象。
+Subjects.objects.all()
+过滤数据。
+# 查询名称为“Python全栈+人工智能”的学科
+Subject.objects.filter(name='Python全栈+人工智能')
+
+# 查询名称包含“全栈”的学科（模糊查询）
+Subject.objects.filter(name__contains='全栈')
+Subject.objects.filter(name__startswith='全栈')
+Subject.objects.filter(name__endswith='全栈')
+
+# 查询所有热门学科
+Subject.objects.filter(is_hot=True)
+
+# 查询编号大于3小于10的学科
+Subject.objects.filter(no__gt=3).filter(no__lt=10)
+Subject.objects.filter(no__gt=3, no__lt=10)
+
+# 查询编号在3到7之间的学科
+Subject.objects.filter(no__ge=3, no__le=7)
+Subject.objects.filter(no__range=(3, 7))
+查询单个对象。
+# 查询主键为1的学科
+Subject.objects.get(pk=1)
+Subject.objects.get(no=1)
+Subject.objects.filter(no=1).first()
+Subject.objects.filter(no=1).last()
+排序。
+# 查询所有学科按编号升序排列
+Subject.objects.order_by('no')
+# 查询所有部门按部门编号降序排列
+Subject.objects.order_by('-no')
+切片（分页查询）。
+# 按编号从小到大查询前3个学科
+Subject.objects.order_by('no')[:3]
+计数。
+# 查询一共有多少个学科
+Subject.objects.count()
+高级查询。
+# 查询编号为1的学科的老师
+Teacher.objects.filter(subject__no=1)
+Subject.objects.get(pk=1).teacher_set.all()
+
+# 查询学科名称有“全栈”二字的学科的老师
+Teacher.objects.filter(subject__name__contains='全栈')
 
 ###### 安装pymysql驱动
 ```text
@@ -911,74 +976,120 @@ python manage.py migrate appname 文件名
     print(ret)
 ```
 
+### ORM模型类生成多表关系
 
-#### 在shell中使用orm模型完成CRUD
-   ``` 
-    python manage.py shell
-   ```
+#### 多表的关系是什么？
+
+###### 在实际的开发过程中，项目一定是有多张表的，且这些表之间都是有关系的
+表于表之间的关系分类为一下三种：
+```text
+1、一对一
+    学生表
+    学号
+    姓名
+一卡通表
+    id
+    姓名
+    金额
+```
+
+###### 学生表对应一卡通的一行，反之也成立，两张表可以合并成一张表，这就是一对一
+
+```text
+2、一对多
+图书表
+    书名
+    价格
+    出版社
+    出版时间
+    出版社（出版社id）
+    
+出版社表
+    id
+    名字
+    城市
+    邮箱
+```
+
+###### 一本图书只能对应一个出版社，但是一个出版社对应很多本图书
+
+```text
+3、多对多
+图书表
+    书名
+    价格
+    出版社
+    出版时间
+    作者（作者id）
+作者表
+    姓名
+    年龄
+    地址
+    出版过的书籍（图书ID）
+```
+
+###### 图书表对应作者表的多行数据（一个图书可能是多个作者编写）；作者表对应图书表多本图书，（一个作者能写很多本书籍）。
+
+> ##### **[如果对于SQL不太了解，推荐看廖雪风SQL教程](https://www.liaoxuefeng.com/wiki/1177760294764384)**
+
+
+#### 介绍完了多表的关系，接下来我们开始使用ORM模型来对多表进行操作
 
 ```python
-from polls.models import Subject
+# 作者表
+class Author(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=32)
+    age = models.IntegerField()
 
-subject1 = Subject(name='Python全栈开发', intro='当下最热门的学科', is_hot=True)
-subject1.save()
-subject2 = Subject(name='全栈软件测试', intro='学习自动化测试的学科', is_hot=False)
-subject2.save()
-subject3 = Subject(name='JavaEE分布式开发', intro='基于Java语言的服务器应用开发', is_hot=True)
-删除
-subject = Subject.objects.get(no=2)
-subject.delete()
-更新
-subject = Subject.objects.get(no=1)
-subject.name = 'Python全栈+人工智能'
-subject.save()
-查询
-查询所有对象。
-Subjects.objects.all()
-过滤数据。
-# 查询名称为“Python全栈+人工智能”的学科
-Subject.objects.filter(name='Python全栈+人工智能')
-
-# 查询名称包含“全栈”的学科（模糊查询）
-Subject.objects.filter(name__contains='全栈')
-Subject.objects.filter(name__startswith='全栈')
-Subject.objects.filter(name__endswith='全栈')
-
-# 查询所有热门学科
-Subject.objects.filter(is_hot=True)
-
-# 查询编号大于3小于10的学科
-Subject.objects.filter(no__gt=3).filter(no__lt=10)
-Subject.objects.filter(no__gt=3, no__lt=10)
-
-# 查询编号在3到7之间的学科
-Subject.objects.filter(no__ge=3, no__le=7)
-Subject.objects.filter(no__range=(3, 7))
-查询单个对象。
-# 查询主键为1的学科
-Subject.objects.get(pk=1)
-Subject.objects.get(no=1)
-Subject.objects.filter(no=1).first()
-Subject.objects.filter(no=1).last()
-排序。
-# 查询所有学科按编号升序排列
-Subject.objects.order_by('no')
-# 查询所有部门按部门编号降序排列
-Subject.objects.order_by('-no')
-切片（分页查询）。
-# 按编号从小到大查询前3个学科
-Subject.objects.order_by('no')[:3]
-计数。
-# 查询一共有多少个学科
-Subject.objects.count()
-高级查询。
-# 查询编号为1的学科的老师
-Teacher.objects.filter(subject__no=1)
-Subject.objects.get(pk=1).teacher_set.all()
-
-# 查询学科名称有“全栈”二字的学科的老师
-Teacher.objects.filter(subject__name__contains='全
+    # 与AuthorDetail建立一对一的关系
+    authorDetail =  models.OneToOneField(to="AuthorDetail",on_delete=models.CASCADE)
 ```
+
+```python
+# 作者详情表 
+class AuthorDetail(models.Model):
+    id = models.AutoField(primary_key=True)
+    birthday = models.DateField()
+    telephone = models.BigIntegerField()
+    addr = models.CharField(max_length=64)
+```
+
+```python
+# 出版社详情
+class Publish(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=32)
+    city = models.CharField(max_length=32)
+    email = models.EmailField()
+```
+
+```python
+# 建立图书表
+class Books(models.Model):
+    id = models.AutoField(primary_key=True,verbose_name='图书id') #verbose_name：详细信息
+    title = models.CharField(max_length=32)
+    publishDate = models.DateField()
+    '''
+    DecimalField
+        固定精度的十进制数，在Python中表示一个 十进制的实例
+        #1. DecimalField max_digits 
+        　　数中允许的最大数目的数字
+        #2. DecimalField decimal_places 
+　           　存储的小数位数的位数   
+    '''
+    price = models.DecimalField(max_digits=5,decimal_places=2)
+
+
+    # 与出版社表建立一对多的关系，外键字段建立在多的一方
+    publish = models.ForeignKey(to='Publish',to_field='id',on_delete=models.CASCADE)
+
+    # 与作者表建立多对多的关系，ManyToManyField可以建立在两个模型中的任意一个，自动创建第三张表
+    Authors = models.ManyToManyField(to='Author')
+```
+
+
+
 ### Django模型最佳实践
 ```
     正确的为模型和关系字段命名。
@@ -1009,21 +1120,10 @@ Teacher.objects.filter(subject__name__contains='全
         Cookies
 ```
 
-### 数据库操作
-```sql
-show databases ;
-use information_schema;
-use vote;
-show tables ;
 
-select * from tb_subject;
-select * from tb_teacher;
-select * from tb_user;
-
-insert into `tb_user`
-    (`username`,`password`,`tel`,`reg_date`)
-values
-    ('wangdachui', '1c63129ae9db9c60c3e8aa94d3e00495', '13122334455', now()),
-    ('hellokitty', 'c6f8cf68e5f68b0aa4680e089ee4742c', '13890006789', now());
-    
-```
+> ### 推荐阅读：
+>
+> ##### [跟我高效率学习Git&GitHub👍](https://github.com/epover/Learn_GitHub)
+> ##### [🌳🚀 CS 可视化：有用的 Git 命令](https://github.com/epover/Learn_GitHub/blob/main/%F0%9F%8C%B3%F0%9F%9A%80%20CS%20%E5%8F%AF%E8%A7%86%E5%8C%96%EF%BC%9A%E6%9C%89%E7%94%A8%E7%9A%84%20Git%20%E5%91%BD%E4%BB%A4.md)
+> ##### [和我一起学习WebService👍](https://github.com/epover/WebService) 
+> ##### [Angular团队提交规范👍](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
