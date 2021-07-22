@@ -35,6 +35,7 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
 
 #### 查看django
    ``` 
+   pip3 show django  查看django安装路径
    django-admin --version
    ```
 
@@ -1044,7 +1045,7 @@ class Author(models.Model):
     name = models.CharField(max_length=32)
     age = models.IntegerField()
 
-    # 与AuthorDetail建立一对一的关系
+    # 与AuthorDetail建立一对一的关系，会自动生成一个authorDetail+'_id'的对应关系字段
     authorDetail =  models.OneToOneField(to="AuthorDetail",on_delete=models.CASCADE)
 ```
 
@@ -1083,7 +1084,7 @@ class Books(models.Model):
     price = models.DecimalField(max_digits=5,decimal_places=2)
 
 
-    # 与出版社表建立一对多的关系，外键字段建立在多的一方
+    # 与出版社表建立一对多的关系，外键字段建立在多的一方，会生成一个以publish+'_id'来对应关系的字段
     publish = models.ForeignKey(to='Publish',to_field='id',on_delete=models.CASCADE)
 
     # 与作者表建立多对多的关系，ManyToManyField可以建立在两个模型中的任意一个，自动创建第三张表
