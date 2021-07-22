@@ -1035,6 +1035,8 @@ python manage.py migrate appname 文件名
 
 #### 介绍完了多表的关系，接下来我们开始使用ORM模型来对多表进行操作
 
+###### 在ORM模型中一对一关系OneToOneField建立，一对多关系ForeignKey建立，多对多关系ManyToManyField建立
+
 ```python
 # 作者表
 class Author(models.Model):
