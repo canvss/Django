@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from ORM import models
 # Create your views here.
+from ORM.models import *
+
+
 def index(request):
     # 添加数据
     # 第一种方法
@@ -111,3 +114,43 @@ def index(request):
     ret = models.Book.objects.filter(title='php3').update(title='php')
     print(ret)
     return HttpResponse(temp)
+
+def add(request):
+    # 返回插入记录Publish对象
+    # publish = Publish.objects.create(name='人民出版社',city='成都',email='endliss@sina.cn')
+    # print(publish)
+
+    # 一对多关系数据表插入
+    # book = Books.objects.create(title='python',price=18,publishDate='2019-12-06',publish_id=1)
+    # print(book)
+    # 通过publish_id=1，ORM帮我们拿到publish对象
+    # print(book.publish.city)
+
+    # 第二种方式实现一对多
+    # 查询id=1的出版社
+    # publish = Publish.objects.filter(id=1).first()
+    # book = Books.objects.create(title='Django',price=53,publishDate='2021-4-30',publish=publish)
+    # print(book)
+    # #  直接能拿到与之关联的数据对象，publish对象
+    # print(book.publish)
+
+    # 查询出JAVA设计模式的出版社邮箱
+    email = Books.objects.filter(title='JAVA设计模式').first().publish.email
+    print(email)
+
+    # Publish.objects.create(name='邮电出版社',city='北京',email='youdian@qq.com')
+
+    # AuthorDetail.objects.filter(id__in=[2,3]).delete()
+    #
+    # # 一对一 插入作者
+    # 返回添加记录对象
+    # authorDetail= AuthorDetail.objects.create(birthday='1998-12-28',telephone='911',addr='四川成都')
+    # print(authorDetail)
+    # author = Author.objects.create(name='Endless',age=23,authorDetail=authorDetail)
+    # print(author)
+    # 一对多插入
+    # book = Books.objects.create(title='RESTFUL API',price=58,publishDate='2008-05-06',publish_id=2)
+    # # 添加第三张表关联数据
+    # book.Authors.add(1)
+
+    return HttpResponse('ok')

@@ -33,6 +33,9 @@ class Publish(models.Model):
     city = models.CharField(max_length=32)
     email = models.EmailField()
 
+    def __str__(self):
+        return self.name
+
 # 建立图书表
 class Books(models.Model):
     id = models.AutoField(primary_key=True,verbose_name='图书id') #verbose_name：详细信息
@@ -54,3 +57,6 @@ class Books(models.Model):
 
     # 与作者表建立多对多的关系，ManyToManyField可以建立在两个模型中的任意一个，自动创建第三张表
     Authors = models.ManyToManyField(to='Author')
+
+    def __str__(self):
+        return self.title

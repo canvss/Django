@@ -12,4 +12,5 @@ from ORM import views
 
 urlpatterns = [
     path('index/',views.index),
+    path('add/',views.add)
 ]
