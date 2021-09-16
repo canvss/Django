@@ -1,4 +1,4 @@
-![](./node_file/dj-01.jpeg)
+![](./node_file/dj-01.jpg)
 
 # PythonWeb框架Django
 
