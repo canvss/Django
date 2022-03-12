@@ -40,9 +40,9 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
 ![](./node_file/img_17.png)
 
 
-#### 目录结构
+#### django目录结构
 
-![](./node_file/img.png)
+![](./node_file/dj.png)
 
 #### 配置文件settings.py
   ```python
