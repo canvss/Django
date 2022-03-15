@@ -1,19 +1,36 @@
 ![](./node_file/dj-01.jpg)
 
 # PythonWeb框架Django
-
 Django是一个开放源代码的Web应用框架，由Python写成,采用了MTV的框架模式.即Model,View,Template组成.许多成功的网站和APP都基于Django， 说到底,其实Django内部就是对 Socket 连接的强大封装.
 
-## 一、 Django流程介绍
+#### django环境安装
+- pip install django==2.2.13 通过pip安装django
+- pip3 show django  查看django安装路径
+- django-admin --version  查看安装版本
 
-![](./node_file/img_18.png)
+#### 创建Django项目
+- django-admin startproject mysite  创建项目
+- python manage.py startapp first   创建app
+- python manage.py runserver 启动Django
+
+![](./node_file/img_17.png)
+
+#### Django目录结构
+
+![](./node_file/dj.png)
+
+## Django应用
+
+### 一、 Django使用流程
+
+![](./node_file/mvc.png)
 
 MVC是众所周知的模式，即：将应用程序分解成三个组成部分:model(模型),view(视图),和 controller(控制 器)。其中：
 - M——管理应用程序的状态（通常存储到数据库中），并约束改变状态的行为（或者叫做“业务规则”）。
 - C——接受外部用户的操作，根据操作访问模型获取数据，并调用“视图”显示这些数据。控制器是将“模型”和“视图”隔离，并成为二者之间的联系纽带。
 - V——负责把数据格式化后呈现给用户。
 
-![](./node_file/25.png)
+![](./node_file/mvt.png)
 
 Django也是一个MVC框架。但是在Django中，控制器接受用户输入的部分由框架自行处理，所以 Django 里更关注的是模型（Model）、模板(Template)和视图（Views），称为 MTV模式：
 - M 代表模型（Model），即数据存取层。 该层处理与数据相关的所有事务： 如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等。
@@ -21,30 +38,9 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
 - V 代表视图（View），即业务逻辑层。 该层包含存取模型及调取恰当模板的相关逻辑。 你可以把它看作模型与模板之间的桥梁。
 
 
-#### 安装django
-- pip install django==2.2.13
+### 二、Django配置 
 
-#### 查看django
-- pip3 show django  查看django安装路径
-- django-admin --version
-
-#### 创建django项目
-- django-admin startproject mysite
-
-#### 创建app
-- python manage.py startapp first
-
-#### 启动django
-- python manage.py runserver
-
-![](./node_file/img_17.png)
-
-
-#### django目录结构
-
-![](./node_file/dj.png)
-
-#### 配置文件settings.py
+#### 1、配置文件settings.py
   ```python
     SESSION_COOKINE_AGE=1209600    session过期时间秒
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True  True在关闭浏览器窗口session就过期
@@ -54,7 +50,7 @@ Django也是一个MVC框架。但是在Django中，控制器接受用户输入�
     SESSION_CACHE_ALIAS = 'default'
     SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 ```
-#### 配置数据库
+#### 2、配置数据库
 以下配置，一定要注意键名：NAME、USER、PASSWORD……  都一定是大写，否则数据验证会失败。
 ```python
 DATABASES = {
@@ -78,19 +74,19 @@ DATABASES = {
 }
 ```
 
-#### 地区
+#### 3、地区
 ```python
 LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Chongqing'
 ```
 
-#### 配置静态文件
+#### 4、配置静态文件
 ```python
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_URL = '/static/'
 ```
 
-#### 路由配置：
+#### 5、路由配置：
 ```python
 urlpatterns = [
     path('hello/', views.show_index),
@@ -109,7 +105,9 @@ urlpatterns = [
 ```
 
 
-### URL分发
+### 三、URL分发
+它的本质是 URL 模式以及要为该 URL 模式调用的视图函数之间的映射表。
+
 #### url.py
 ```Python
 urlpatterns = [
@@ -174,7 +172,7 @@ class User(models.Model):
         verbose_name_plural = '用户'
 ```
 
-### URL反向解析
+### 三、URL反向解析
 - 定义:随着功能的增加会出现更多的视图，可能之前配置的正则表达式不够准确，于是就要修改正则表达式，但是正则表达式一旦修改了，之前所有对应的超链接 都要修改，真是一件麻烦的事情，而且可能还会漏掉一些超链接忘记修改，有办法让链接根据正则表达式动态生成吗？ 就是用反向解析的办法。
         
 - 使用方法：定义url时，需要为include定义namespace属性，为url定义name属性 使用时，在模板中使用url标签，在视图中使用reverse函数，根据正则表达式动态生成地址，减轻后期维护成本。
@@ -214,7 +212,7 @@ re_path(r'^articles/([0-9]{4})/$',views.year_archive,name='ye'),
  ```   
 
 
-### 名称空间
+### 四、名称空间
 命名空间（英语：Namespace）是表示标识符的可见范围。一个标识符可在多个命名空间中定义，它在不同命名空间中的含义是互不相干的。这样，在一个新的命名空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其它命名空间中。
 
 #### 创建两个应用mystie、model,为两个应用的url设置name属性为index
@@ -266,7 +264,7 @@ def index(request):
     return HttpResponse(reverse('model:index'))
 ```
 
-### django内置转换器
+### 五、django内置转换器
 #### converters源码
 ```python
 class IntConverter:
@@ -314,7 +312,7 @@ class UUIDConverter:
 - uuid：只有满足uuid形式的字符串才行。
 - slug：英文中的横杆或者英文字符或者阿拉伯数字或者下划线才满足。
     
-### 自定义转换器
+### 六、自定义转换器
 1、创建一个自定义converter类
 
 ![](./node_file/img_5.png)
@@ -366,7 +364,7 @@ def login(request):
 ![](./node_file/img_8.png)
 
 
-### request请求对象
+### 七、request请求对象
  ```python
 def login(request):
     print('请求方法：',request.method)
@@ -392,7 +390,7 @@ def login(request):
 
 ![](./node_file/img_12.png)
 
-### 模版语法
+### 八、模版语法
 只要是在html里面有模板语法就不是html文件了，这样的文件就叫做模板。
 
 #### Django中模版语法只有两种写法
@@ -411,7 +409,9 @@ def index(request):
     info = {'name': 'tom', 'job':'python'}
     return render(request,'model/index.html',{'jack':jack,'info':info})
 ```
-##### 使用这样字典方式传入参数，如果有1000个那么怎么办？
+
+使用这样字典方式传入参数，如果有1000个那么怎么办？
+
 我们可以使用Django中的locals()函数，locals() 函数会以字典类型返回当前位置的全部局部变量。
 
 ```python
@@ -490,7 +490,7 @@ def index(request):
 </html>
 ```
 
-### 过滤器
+### 九、过滤器
 常用过滤器：
 - random 
 - filesizeformat
@@ -530,7 +530,7 @@ def index(request):
 ![](./node_file/img_26.png)
 
 
-### 标签
+### 十、标签
 - for循环
 ```html
     <p>
@@ -571,7 +571,7 @@ def index(request):
  </p>
 ```
 
-### 自定义过滤器、标签
+### 十一、自定义过滤器、标签
 Django虽然为我们内置了二十多种标签和六十多种过滤器，但是需求是各种各样的，总有一款你cover不到。Django为我们提供了自定义的机制，可以通过使用Python代码，自定义标签和过滤器来扩展模板引擎，然后使用{% load %}标签加载它们。
 
 1.安装app
@@ -617,7 +617,7 @@ def multi_tag(x,y,z):
 
 ## 使用ORM来解决数据持久化问题
 
-### 什么是ORM？
+### 一、什么是ORM？
 使用面向对象编程，来操作关系型数据库。
 
 ![](./node_file/img_37.png)
@@ -634,7 +634,7 @@ ORM 把数据库映射成对象。
 ![](./node_file/img_36.png)
 
 
-#### 在shell中使用orm模型完成CRUD
+#### 1、在shell中使用orm模型完成CRUD
 python manage.py shell
 
 ```python
@@ -701,7 +701,7 @@ Teacher.objects.filter(subject__name__contains='全栈')
 
 
 ```
-#### 安装pymysql驱动
+#### 2、安装pymysql驱动
 - pip install pymysql
 
 
@@ -737,7 +737,7 @@ class Book(models.Model):
     press = models.CharField(max_length=32)
 ```
 
-####执行orm对象模型到关系模型转换（将类转换成sql）
+#### 3、执行orm对象模型到关系模型转换（将类转换成sql）
 
  - python manage.py makemigrations
 这个命令是记录我们对models.py的所有改动，并且将这个改动迁移到migrations这个文件下生成一个文件例如：0001文件，如果你接下来还要进行改动的话可能生成就是另外一个文件不一定都是0001文件，但是这个命令并没有作用到数据库
@@ -754,11 +754,11 @@ python manage.py migrate appname,
 python manage.py migrate appname 文件名
 ```
 
-#### 反向生成
+#### 4、反向生成
 python manage.py inspectdb > polls/models.py
 
-### 对数据库进行操作
-#### 常用查询方法：
+### 二、对数据库进行操作
+#### 1、常用查询方法：
 
 - all():                 查询所有结果
      
@@ -789,7 +789,7 @@ python manage.py inspectdb > polls/models.py
 
 
 
-#### 添加数据
+#### 2、添加数据
 ```python
     # 第一种方法
      book = models.Book(title='JAVA编程思想',pub_date='2020-12-3',press='人民出版社',price=89)
@@ -800,7 +800,7 @@ python manage.py inspectdb > polls/models.py
      print(type(book))
 ```
 
-#### 查询
+#### 3、查询
 
 all()
 ```python
@@ -879,7 +879,7 @@ orader_by()
     book = models.Book.objects.orader_by('-price')
 ```
 
-#### 模糊查询
+#### 4、模糊查询
 ```python
     # 模糊查询
     # __startswith():以p开头;istartswith:不区分大小写
@@ -910,23 +910,23 @@ orader_by()
     print(models.Book.objects.filter(price__range=[10,100]).values('price'))
 ```
 
-#### 删除数据
+#### 5、删除数据
 ```python
     # delete() 删除返回：(1, {'ORM.Book': 1}) 删除记录，表名，
     ret = models.Book.objects.filter(title='php').delete()
     print(ret)
 ```
 
-#### 更新数据
+#### 6、更新数据
 ```python
     # .update() 更新数据
     ret = models.Book.objects.filter(title='php3').update(title='php')
     print(ret)
 ```
 
-### ORM模型类生成多表关系
+### 三、ORM模型类生成多表关系
 
-#### 多表的关系是什么？
+#### 1、多表的关系是什么？
 在实际的开发过程中，项目一定是有多张表的，且这些表之间都是有关系的
 表于表之间的关系分类为一下三种：
 ```text
@@ -978,7 +978,7 @@ orader_by()
 图书表对应作者表的多行数据（一个图书可能是多个作者编写）；作者表对应图书表多本图书，（一个作者能写很多本书籍）。
 
 
-#### 介绍完了多表的关系，接下来我们开始使用ORM模型来对多表进行操作
+#### 2、介绍完了多表的关系，接下来我们开始使用ORM模型来对多表进行操作
 
 在ORM模型中一对一关系OneToOneField建立，一对多关系ForeignKey建立，多对多关系ManyToManyField建立
 
@@ -1035,7 +1035,7 @@ class Books(models.Model):
     Authors = models.ManyToManyField(to='Author')
 ```
 
-#### 多表记录操作
+#### 3、多表记录操作
 
 - 一对一表添加数据
 ```python
@@ -1080,7 +1080,7 @@ class Books(models.Model):
 
 
 
-### Django模型最佳实践
+### 三、Django模型最佳实践
 - 正确的为模型和关系字段命名。
 - 设置适当的related_name属性。
 - 用OneToOneField代替ForeignKeyField(unique=True)。
@@ -1096,7 +1096,7 @@ class Books(models.Model):
 - 定义__str__方法。
 - 不要将数据文件放在同一个目录中。
 
-### 实现用户跟踪
+## 实现用户跟踪
 - URl重写：所谓URL重写就是在URL中携带sessionid
 - 隐藏域：在提交表单时，通过表单中设置隐藏域向服务器发送数据
   
