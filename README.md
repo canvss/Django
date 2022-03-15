@@ -315,8 +315,6 @@ class UUIDConverter:
 ### 六、自定义转换器
 1、创建一个自定义converter类
 
-![](./node_file/img_5.png)
-
 NumConverter.py
   ```python
   class NumConverter:
@@ -530,7 +528,7 @@ def index(request):
 ![](./node_file/img_26.png)
 
 
-### 十、标签
+### 十、Django中的标签
 - for循环
 ```html
     <p>
